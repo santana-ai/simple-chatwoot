@@ -10,27 +10,24 @@ import requests
 from .utils import check_response
 
 class ChatWoot:
+    """
+        Initialize the instance with the given parameters.
+
+        Arguments
+
+        * param api_access_token -- should be an administrators security token for the account, example: rkoo0op2PPsihsv8JW3IjfiF
+        * param account_id -- numeric ID of the account, example: 1
+        * param inbox_id -- ID of the inbox, example: 1
+        * param domain -- domain to use for connecting to Chatwoot instance, example: https://chatwoot.example.com
+    
+    """
+
     def __init__(self, 
                  domain:str, 
                  api_access_token:str, 
                  account_id:str, 
                  inbox_id:str,
                  ) -> None:
-
-        """
-        Initialize the instance with the given parameters.
-
-        Arguments
-
-        * api_access_token -- should be an administrators security token for the account
-                              example: rkoo0op2PPsihsv8JW3IjfiF 
-        * account_id -- numeric ID of the account
-                        example: 1
-        * inbox_id -- ID of the inbox
-                      example: 1
-        * domain -- domain to use for connecting to Chatwoot instance
-                    example: https://chatwoot.example.com
-        """
 
         self.domain = domain
         self.api_access_token = api_access_token
@@ -44,6 +41,8 @@ class ChatWoot:
     def create_agent(self):
         """
         Add a new Agent to Account
+
+        # Not implemented yet. Here for documentation purposes.
         """
         pass
 
@@ -72,8 +71,7 @@ class ChatWoot:
         * email -- email of the contact
         * phone -- phone number of the contact
         * identifier -- a unique identifier for the contact in external system
-        * custom_attributes -- an object where you can store custom attributes for contact. 4
-                               example: {"type":"customer", "age":30}
+        * custom_attributes -- an object where you can store custom attributes for contact, example: {"type":"customer", "age":30}
  
         """
 
@@ -132,9 +130,7 @@ class ChatWoot:
 
         Arguments
 
-        * contact_source_id -- source id could be the identifier hash in case of a webwidget, 
-                               twitter_id in case of a twitter profile and email in case of email channel.
-                               example: 561f3286-a92e-4b59-ae1d-9301154313f1
+        * contact_source_id -- source id could be the identifier hash in case of a webwidget, twitter_id in case of a twitter profile and email in case of email channel, example: 561f3286-a92e-4b59-ae1d-9301154313f1
         * contact_id -- contact Id for which conversation is created
         * assignee_id -- agent Id for assigning a conversation to an agent
         * team_id -- team Id for assigning a conversation to a team
@@ -166,6 +162,13 @@ class ChatWoot:
         return conversation_id
 
     def get_conversation_details(self, conversation_id:str)->Dict:
+        """
+        Get all details regarding a conversation with all messages in the conversation
+        
+        Arguments
+
+        * conversation_id -- numeric ID of the conversation
+        """
         headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations/"+conversation_id, 
                             headers=headers)
@@ -178,17 +181,24 @@ class ChatWoot:
 
     def create_message(self,
                        conversation_id:str, 
-                       message:str, 
+                       content:str, 
                        message_type:str="incoming",
                        is_private:bool=False,
                       )->str:
         """
         Conversation is a numeric identification like 5670
         If using API inbox type, make sure your webhook server is up and running otherwise you'll get errors from it
+        
+        Arguments
+
+        * conversation_id -- numeric ID of the conversation
+        * content -- content of the message
+        * message_type -- weather it's "outgoing" or "incoming"
+        * is_private -- flag to identify if it is a private note        
         """
 
         payload = {
-            'content': message, 
+            'content': content, 
             'message_type': message_type, 
             'private': is_private, 
         }
@@ -203,6 +213,13 @@ class ChatWoot:
         return message_id
 
     def list_messages(self, conversation_id:str)->Dict:
+        """
+        List all messages of a conversation
+        
+        Arguments
+
+        * conversation_id -- numeric ID of the conversation
+        """
         headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations/"+conversation_id+"/messages", 
                             headers=headers)
