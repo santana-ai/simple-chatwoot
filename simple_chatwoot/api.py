@@ -122,7 +122,8 @@ class ChatWoot:
                             assignee_id:str=None,
                             team_id:str=None,
                             additional_attributes:Dict={ },
-                            status:str="open"
+                            status:str="open",
+                            **kargs
                             )->str:
         """
         Creating a conversation in chatwoot requires a source id.
@@ -136,6 +137,7 @@ class ChatWoot:
         * team_id -- team Id for assigning a conversation to a team
         * additional_attributes -- lets you specify attributes like browser information
         * status -- specify the conversation whether it's pending, open, closed
+        * kargs -- additional named arguments
         """
 
         # Note: inbox_id is the Id of inbox in which the conversation is created
@@ -151,12 +153,15 @@ class ChatWoot:
             'team_id':team_id,
         }
 
+        # If user sends other arguments, update payload
+        payload.update(dict(kargs))
+
         headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.post(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations", 
                             data=json.dumps(payload),
                             headers=headers)
         
-        json_response_dict = check_response(response, 200, "Message Creation Failed")
+        json_response_dict = check_response(response, 200, "Conversation Creation Failed")
         conversation_id = str(json_response_dict['id'])
 
         return conversation_id
@@ -242,4 +247,3 @@ class ChatWoot:
         json_response_dict = check_response(response, 200, "Message Creation Failed")
 
         return json_response_dict
-
