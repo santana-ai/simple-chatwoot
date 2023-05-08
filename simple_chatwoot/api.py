@@ -83,7 +83,7 @@ class ChatWoot:
             'identifier': identifier, 
             'custom_attributes':custom_attributes
         }
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.post(self.domain+"/api/v1/accounts/"+self.account_id+"/contacts", 
                             data=json.dumps(payload),
                             headers=headers)
@@ -105,7 +105,7 @@ class ChatWoot:
         * page -- page number, default is 1
         """
 
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/contacts/search?q="+search_key+"&page="+page, 
                             headers=headers)
 
@@ -156,7 +156,7 @@ class ChatWoot:
         # If user sends other arguments, update payload
         payload.update(dict(kargs))
 
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.post(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations", 
                             data=json.dumps(payload),
                             headers=headers)
@@ -174,7 +174,7 @@ class ChatWoot:
 
         * conversation_id -- numeric ID of the conversation
         """
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations/"+conversation_id, 
                             headers=headers)
         
@@ -207,7 +207,7 @@ class ChatWoot:
             'message_type': message_type, 
             'private': is_private, 
         }
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.post(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations/"+conversation_id+"/messages", 
                             data=json.dumps(payload),
                             headers=headers)
@@ -225,7 +225,7 @@ class ChatWoot:
 
         * conversation_id -- numeric ID of the conversation
         """
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/conversations/"+conversation_id+"/messages", 
                             headers=headers)
         
@@ -240,7 +240,7 @@ class ChatWoot:
         """
         List all inboxes available in the current account
         """
-        headers = {'api_access_token': self.api_access_token, 'Content-type': 'application/json'}
+        headers = {'api-access-token': self.api_access_token, 'Content-type': 'application/json'}
         response = requests.get(self.domain+"/api/v1/accounts/"+self.account_id+"/inboxes", 
                             headers=headers)
         
